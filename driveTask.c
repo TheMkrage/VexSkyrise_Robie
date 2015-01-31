@@ -99,11 +99,11 @@ void normalDrive() {
 		motor[leftBack]  = leftSpeed;  // (y + x)/2
 		motor[rightBack] = rightSpeed;
 	}
-	/*if(vexRT[Ch4] > 40 || vexRT[Ch4] < -40) {	//Threshold for strafe joystick
+	if(vexRT[Ch4] > 40 || vexRT[Ch4] < -40) {	//Threshold for strafe joystick
 		motor[Strafe] = vexRT[Ch4];
 		}else {
 		motor[Strafe] = 0;
-	}*/
+	}
 }
 
 void gyroDrive() {
