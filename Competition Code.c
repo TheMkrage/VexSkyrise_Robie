@@ -64,9 +64,9 @@ task usercontrol(){
 	nMotorEncoder[rightEl] = 0;
 	//driveStraightDistance(100, 63);
 	resetEn();
-	//startTask( driveTask );
-	//startTask( clawTask );
-	//startTask( elevatorTask );
+	startTask( driveTask );
+	startTask( clawTask );
+	startTask( elevatorTask );
 	while(true) {
 		//writeDebugStreamLine("Front Sonar: %i", SensorValue[frontSonar]);
 		if(vexRT[Btn7D] == 1) {
