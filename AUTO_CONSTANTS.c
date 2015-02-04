@@ -1,10 +1,11 @@
-const int  STRAFE_TIME =300;
-const int  SKYRISE_BASE_ANGLE =350;
-const int  MUSTARD_FORWARD =-92;
+const int  STRAFE_TIME =500;
+const int  SKYRISE_BASE_ANGLE =-390;
+const int  MUSTARD_FORWARD =-120;
+const int  LITTLE_ELEVATOR = 200;
 const int  FULL_HEIGHT_ELEVATOR =700;
-const int  FORWARD_TO_BASE =-125;
+const int  FORWARD_TO_BASE = 90;
 const int  TIME_TO_BRING_DOWN_EL =1200;
-const int  SECOND_FORWARD_TO_MUSTARD =-180;
+const int  SECOND_FORWARD_TO_MUSTARD =-200;
 
 //new
 const int TO_DROP_MUSTARD = 4000;

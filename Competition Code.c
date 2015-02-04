@@ -1,4 +1,3 @@
-#pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
 #pragma config(I2C_Usage, I2C1, i2cSensors)
 #pragma config(Sensor, in1,    gyro,           sensorGyro)
 #pragma config(Sensor, in2,    autoChoose,     sensorPotentiometer)
@@ -47,87 +46,33 @@ int leftPIDSonar;
 #include "clawTask.c"
 
 #include "AUTO.c"
-
+#include "LCDAuto.c"
 
 
 void pre_auton() {
 	resetEn();
 }
 
-#define abs(X) ((X < 0) ? -1 * X : X)
-//vex Forum PID Attempt
-void driveStraightDistance(int tenthsOfIn, int masterPower)
-{
-	//int tickGoal = (42 * tenthsOfIn) / 10;
-	int tickGoal = tenthsOfIn;
-	//This will count up the total encoder ticks despite the fact that the encoders are constantly reset.
-	int totalTicks = 0;
-
-	//Initialise slavePower as masterPower - 5 so we don't get huge error for the first few iterations. The
-	//-5 value is based off a rough guess of how much the motors are different, which prevents the robot from
-	//veering off course at the start of the function.
-	int slavePower = masterPower - 5;
-
-	int error = 0;
-
-	int kp = 5;
-
-	SensorValue[leftDrive] = 0;
-	SensorValue[rightDrive] = 0;
-
-	//Monitor 'totalTicks', instead of the values of the encoders which are constantly reset.
-	while(abs(totalTicks) < tickGoal) {
-		//Proportional algorithm to keep the robot going straight.
-
-		writeDebugStreamLine("Left(MASTER): %i Right(SLAVE): %i",SensorValue[leftDrive], SensorValue[rightDrive]);
-		writeDebugStreamLine("ERROR: %i", error);
-		writeDebugStreamLine("master: %i slave: %i", masterPower, slavePower);
-		writeDebugStreamLine(" ");
-		motor[leftFront] = slavePower;
-		motor[leftBack] = slavePower;
-		motor[rightFront] = masterPower;
-		motor[rightBack] = masterPower;
-
-		error = abs(SensorValue[rightDrive]) - abs(SensorValue[leftDrive]);
-
-		slavePower += error / kp;
-
-		//SensorValue[leftDrive] = 0;
-		//SensorValue[rightDrive] = 0;
-
-		wait1Msec(100);
-
-		//Add this iteration's encoder values to totalTicks.
-		totalTicks  = abs(SensorValue[rightDrive]);
-	}
-	stopDrive();
-}
-
 task autonomous() {
 	resetEn();
 	startauton();
-	wait1Msec(100000);
-	driveStraightDistance(900,63);
-	wait1Msec(1000);
-	writeDebugStreamLine("----------------------");
-	driveStraightDistance(900,-63);
 	stopDrive();
 }
 
-const int dreamAngle = 525;
-
 task usercontrol(){
+	clearLCDLine(0);
 	nMotorEncoder[rightEl] = 0;
 	//driveStraightDistance(100, 63);
 	resetEn();
-	startTask( driveTask );
-	startTask( clawTask );
-	startTask( elevatorTask );
+	//startTask( driveTask );
+	//startTask( clawTask );
+	//startTask( elevatorTask );
 	while(true) {
 		//writeDebugStreamLine("Front Sonar: %i", SensorValue[frontSonar]);
 		if(vexRT[Btn7D] == 1) {
 			startTask(autonomous);
 		}
+		displayLCDCenteredString(0, "HOWDY");
 		if(vexRT[Btn7L] == 1) {
 			//stopTask(autonomous);
 		}
@@ -137,16 +82,7 @@ task usercontrol(){
 			wait1Msec(750);
 			SensorValue[led1] = false;
 		}
-		if(SensorValue(gyro) > dreamAngle) {
-			SensorValue[bigLED] = 1;
-			SensorValue[litLED] = 0;
-			}else if(SensorValue(gyro) < dreamAngle) {
-			SensorValue[litLED] = 1;
-			SensorValue[bigLED] = 0;
-			}else if(SensorValue(gyro) == dreamAngle) {
-			SensorValue[litLED] = 1;
-			SensorValue[bigLED] = 1;
-		}
+		//runLCD();
 
 	}
 }

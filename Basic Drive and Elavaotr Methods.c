@@ -44,8 +44,8 @@ void turnRight(int throttle){
 void moveForward(int throttle){
 	motor[leftFront] = throttle;
 	motor[leftBack] = throttle;
-	motor[rightFront] = -throttle;
-	motor[rightBack] = -throttle;
+	motor[rightFront] = throttle;
+	motor[rightBack] = throttle;
 }
 
 void moveBackward(int throttle){
