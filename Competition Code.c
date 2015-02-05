@@ -72,7 +72,7 @@ task usercontrol(){
 		if(vexRT[Btn7D] == 1) {
 			startTask(autonomous);
 		}
-		displayLCDCenteredString(0, "HOWDY");
+		//displayLCDCenteredString(0, "HOWDY");
 		if(vexRT[Btn7L] == 1) {
 			//stopTask(autonomous);
 		}
@@ -82,7 +82,7 @@ task usercontrol(){
 			wait1Msec(750);
 			SensorValue[led1] = false;
 		}
-		//runLCD();
+		runLCD();
 
 	}
 }

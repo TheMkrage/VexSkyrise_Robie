@@ -100,9 +100,9 @@ void normalDrive() {
 		motor[rightBack] = rightSpeed;
 	}
 	if(vexRT[Ch4] > 40 || vexRT[Ch4] < -40) {	//Threshold for strafe joystick
-		motor[Strafe] = vexRT[Ch4];
+		motor[strafe] = vexRT[Ch4];
 		}else {
-		motor[Strafe] = 0;
+		motor[strafe] = 0;
 	}
 }
 

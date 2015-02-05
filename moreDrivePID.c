@@ -1,8 +1,3 @@
-
-
-
-
-
 task PIDControllerDIF(){
 	float pid_Kp = 0.4;
 	float  pid_Ki = 0.0;
