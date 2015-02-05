@@ -5,9 +5,9 @@ void startRed() {
 
 	startPID(initialAngle, gyro);
 	//initial strafe
-	//motor[Strafe] = 127;
+	motor[strafe] = -127;
 	wait1Msec(RED_STRAFE_TIME);
-	//motor[Strafe] = 0;
+	motor[strafe] = 0;
 
 	//finish realigning
 	wait1Msec(500);
@@ -55,14 +55,14 @@ void startRed() {
 
 	//moveback a little
 	resetEn();
-	while(SensorValue(leftDrive) > -180 && SensorValue(rightDrive) < 180) {
+	while(abs(SensorValue(leftDrive)) < 180 && abs(SensorValue(rightDrive)) < 180) {
 		moveBackward(40);
 	}
 	stopDrive();
 
 	//get gyro angle
 	resetEn();
-	startPID(-RED_SKYRISE_BASE_ANGLE, gyro);
+	startPID(RED_SKYRISE_BASE_ANGLE, gyro);
 	wait1Msec(1500);
 	stopTask(PIDController);
 
@@ -75,7 +75,7 @@ void startRed() {
 	stopDrive();
 
 	resetEn();
-	startPID(-RED_SKYRISE_BASE_ANGLE, gyro);
+	startPID(RED_SKYRISE_BASE_ANGLE, gyro);
 	wait1Msec(500);
 	stopTask(PIDController);
 
@@ -95,7 +95,7 @@ void startRed() {
 
 	//move back
 	resetEn();
-	while(SensorValue(leftDrive) > -125 && SensorValue(rightDrive) < 125) {
+	while(abs(SensorValue(leftDrive)) < 180 && abs(SensorValue(rightDrive)) < 180) {
 		moveBackward(40);
 	}
 	stopDrive();

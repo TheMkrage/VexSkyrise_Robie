@@ -3,6 +3,35 @@
 #include "AUTO_RED.c"
 #include "AUTO_BLUE.c"
 
+bool manualPickAuto = false;
 void startauton() {
-	startRed();
+	if(manualPickAuto) {
+		startRed();
+		return;
+	}
+
+
+	//Clear LCD
+	clearLCDLine(0);
+	clearLCDLine(1);
+	//Switch Case that actually runs the user choice
+	switch(count){
+	case 0:
+		startRed();
+		break;
+	case 1:
+		startBlue();
+		break;
+	case 2:
+		startRed();
+		break;
+	case 3:
+		startBlue();
+		break;
+	default:
+		displayLCDCenteredString(0, "No valid choice");
+		displayLCDCenteredString(1, "was made!");
+		break;
+	}
+	//------------- End of Robot Movement Code -----------------------
 }

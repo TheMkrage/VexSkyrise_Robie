@@ -36,18 +36,14 @@ int leftPIDAngle;
 int rightPIDSonar;
 int leftPIDSonar;
 
-
 #include "Vex_Competition_Includes.c"
-
-
 
 #include "elavatorTask.c"
 #include "driveTask.c"
 #include "clawTask.c"
 
-#include "AUTO.c"
 #include "LCDAuto.c"
-
+#include "AUTO.c"
 
 void pre_auton() {
 	resetEn();
@@ -64,9 +60,11 @@ task usercontrol(){
 	nMotorEncoder[rightEl] = 0;
 	//driveStraightDistance(100, 63);
 	resetEn();
-	startTask( driveTask );
-	startTask( clawTask );
-	startTask( elevatorTask );
+	//startTask( driveTask );
+	//startTask( clawTask );
+	//startTask( elevatorTask );
+
+	startTask( runLCD);
 	while(true) {
 		//writeDebugStreamLine("Front Sonar: %i", SensorValue[frontSonar]);
 		if(vexRT[Btn7D] == 1) {
@@ -76,13 +74,15 @@ task usercontrol(){
 		if(vexRT[Btn7L] == 1) {
 			//stopTask(autonomous);
 		}
+
 		if(SensorValue(gyroBumper) == 1) {
 			resetGyro();
 			SensorValue[led1] = true;
 			wait1Msec(750);
 			SensorValue[led1] = false;
 		}
-		runLCD();
+
+
 
 	}
 }
