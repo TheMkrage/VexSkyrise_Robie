@@ -120,11 +120,6 @@ task PIDController(){
 
 	while(1){
 
-		if(SensorValue[master] < pidRequestedValue - 20 && SensorValue[master] > pidRequestedValue + 20) {
-			stopTask(PIDController);
-			}else{
-			pidRunning = true;
-		}
 		// Is PID control active
 		if( pidRunning == true)  {
 
@@ -167,9 +162,6 @@ task PIDController(){
 				motor[rightFront] = -pidDrive;
 				motor[rightBack] = -pidDrive;
 
-			if(SensorValue[master] < pidRequestedValue - 20 && SensorValue[master] > pidRequestedValue + 20) {
-				pidRunning = false;
-			}
 
 			}else{
 			writeDebugStreamLine("Stopped");
