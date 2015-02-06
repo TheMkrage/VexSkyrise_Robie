@@ -108,7 +108,7 @@ task PIDController(){
 	float  pidIntegral;
 	float  pidDerivative;
 	float  pidDrive;
-	bool pidRunning;
+	bool pidRunning = true;
 
 	// If we are using an encoder then clear it
 	//if( SensorType[ PID_SENSOR_INDEX ] == sensorQuadEncoder )
@@ -147,7 +147,7 @@ task PIDController(){
 
 			// calculate drive
 			pidDrive = (pid_Kp * pidError) + (pid_Ki * pidIntegral) + (pid_Kd * pidDerivative);
-			writeDebugStreamLine("P: %3.3f, I: %3.3f, D: %3.3f, drive: %3.3f" ,(pid_Kp * pidError), (pid_Ki * pidIntegral), (pid_Kd * pidDerivative),pidDrive);
+			writeDebugStreamLine("ANGLE: P: %3.3f, I: %3.3f, D: %3.3f, drive: %3.3f" ,(pid_Kp * pidError), (pid_Ki * pidIntegral), (pid_Kd * pidDerivative),pidDrive);
 
 			// limit drive
 			if( pidDrive > PID_DRIVE_MAX )

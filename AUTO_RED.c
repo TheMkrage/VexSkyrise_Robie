@@ -1,5 +1,7 @@
 
 void startRed() {
+		writeDebugStreamLine("STARTING BLUE");
+	startTask(autoClock);
 	///sets initial angle
 	int initialAngle = SensorValue(gyro);
 
@@ -10,7 +12,7 @@ void startRed() {
 	motor[strafe] = 0;
 
 	//finish realigning
-	wait1Msec(500);
+	wait1Msec(300);
 	stopTask(PIDController);
 
 
@@ -32,7 +34,7 @@ void startRed() {
 	stopTask(PIDControllerEnFriend);
 	stopTask(PIDControllerEn);
 	stopDrive();
-	wait1Msec(500);
+	wait1Msec(300);
 
 	resetEn();
 	//Move up little, grab, continue
@@ -61,22 +63,23 @@ void startRed() {
 	stopDrive();
 
 	//get gyro angle
+	stopTask(PIDController);
 	resetEn();
 	startPID(RED_SKYRISE_BASE_ANGLE, gyro);
-	wait1Msec(1500);
+	wait1Msec(1000);
 	stopTask(PIDController);
 
 	resetEn();
 	//move to yellow
 	startPID(RED_FORWARD_TO_BASE, leftDrive, rightDrive, true);
-	wait1Msec(1500);
+	wait1Msec(800);
 	stopTask(PIDControllerEnFriend);
 	stopTask(PIDControllerEn);
 	stopDrive();
 
 	resetEn();
 	startPID(RED_SKYRISE_BASE_ANGLE, gyro);
-	wait1Msec(500);
+	wait1Msec(400);
 	stopTask(PIDController);
 
 	//bring down el
@@ -95,14 +98,55 @@ void startRed() {
 
 	//move back
 	resetEn();
-	while(abs(SensorValue(leftDrive)) < 200 && abs(SensorValue(rightDrive)) < 200) {
+	while(abs(SensorValue(leftDrive)) < 160 && abs(SensorValue(rightDrive)) < 160) {
 		moveBackward(127);
 	}
 	stopDrive();
 
 	resetEn();
-	startPID(900, gyro);
+	startPID(950, gyro);
 	wait1Msec(1000);
 	stopTask(PIDController);
 	stopDrive();
+
+	resetEn();
+	while(abs(SensorValue(leftDrive)) < 300 && abs(SensorValue(rightDrive)) < 300) {
+		moveForward(127);
+	}
+	stopDrive();
+
+		//move up to full extent
+	while(abs(nMotorEncoder[rightEl]) < RED_FULL_HEIGHT_ELEVATOR) {
+		allElOnMax();
+	}
+	allElStop();
+
+		resetEn();
+	while(abs(SensorValue(leftDrive)) < 300 && abs(SensorValue(rightDrive)) < 300) {
+		moveBackward(127);
+	}
+	stopDrive();
+
+	//get gyro angle
+	stopTask(PIDController);
+	resetEn();
+	startPID(RED_SKYRISE_BASE_ANGLE, gyro);
+	wait1Msec(1000);
+	stopTask(PIDController);
+
+	resetEn();
+	//move to yellow
+	startPID(RED_FORWARD_TO_BASE, leftDrive, rightDrive, true);
+	wait1Msec(800);
+	stopTask(PIDControllerEnFriend);
+	stopTask(PIDControllerEn);
+	stopDrive();
+
+		//bring down el
+	clearTimer(T1);
+	while(time1[T1] < RED_TIME_TO_BRING_DOWN_EL) {
+		allElOnMaxDown();
+
+	}
+	allElStop();
 }

@@ -1,5 +1,6 @@
 //#include "moreDrivePID.c"
 void startBlue() {
+	writeDebugStreamLine("STARTING BLUE");
 	///sets initial angle
 	int initialAngle = SensorValue(gyro);
 

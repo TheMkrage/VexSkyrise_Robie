@@ -1,4 +1,15 @@
 
+task autoClock() {
+	clearTimer(T4);
+	while(time1[T4] < 14400) {
+
+	}
+	stopTask(autonomous);
+	moveBackward(127);
+	wait1Msec(550);
+	stopDrive();
+}
+
 #include "AUTO_CONSTANTS.c"
 #include "AUTO_RED.c"
 #include "AUTO_BLUE.c"
