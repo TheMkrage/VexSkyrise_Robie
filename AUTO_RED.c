@@ -95,13 +95,13 @@ void startRed() {
 
 	//move back
 	resetEn();
-	while(abs(SensorValue(leftDrive)) < 180 && abs(SensorValue(rightDrive)) < 180) {
-		moveBackward(40);
+	while(abs(SensorValue(leftDrive)) < 200 && abs(SensorValue(rightDrive)) < 200) {
+		moveBackward(127);
 	}
 	stopDrive();
 
 	resetEn();
-	startPID(initialAngle, gyro);
+	startPID(900, gyro);
 	wait1Msec(1000);
 	stopTask(PIDController);
 	stopDrive();

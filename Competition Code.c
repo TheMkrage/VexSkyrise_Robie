@@ -57,6 +57,7 @@ task autonomous() {
 
 task usercontrol(){
 	clearLCDLine(0);
+
 	nMotorEncoder[rightEl] = 0;
 	//driveStraightDistance(100, 63);
 	resetEn();
