@@ -81,9 +81,6 @@ task usercontrol(){
 			SensorValue[led1] = true;
 			wait1Msec(750);
 			SensorValue[led1] = false;
-		}
-
-
-
+		}//parmesan
 	}
 }

@@ -84,9 +84,8 @@ void startRed() {
 
 	//bring down el
 	clearTimer(T1);
-	while(time1[T1] < RED_TIME_TO_BRING_DOWN_EL) {
+	while(time1[T1] < RED_TIME_TO_BRING_DOWN_EL && SensorValue[bumperSwitch] == 0) {
 		allElOnMaxDown();
-
 	}
 	allElStop();
 
@@ -139,7 +138,7 @@ void startRed() {
 
 		//bring down el
 	clearTimer(T1);
-	while(time1[T1] < RED_TIME_TO_BRING_DOWN_EL) {
+	while(time1[T1] < RED_TIME_TO_BRING_DOWN_EL  && SensorValue[bumperSwitch] == 0) {
 		allElOnMaxDown();
 
 	}

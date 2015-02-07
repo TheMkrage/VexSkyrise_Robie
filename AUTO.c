@@ -5,6 +5,8 @@ task autoClock() {
 
 	}
 	stopTask(autonomous);
+	allElStop();
+	motor[rightClaw] = 0;
 	moveBackward(127);
 	wait1Msec(550);
 	stopDrive();
