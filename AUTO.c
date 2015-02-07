@@ -30,10 +30,10 @@ void startauton() {
 	//Switch Case that actually runs the user choice
 	switch(count){
 	case 0:
-		startRed12();
+		startRed8();
 		break;
 	case 1:
-		startBlue12();
+		startBlue8();
 		break;
 	case 2:
 		startRed12();
