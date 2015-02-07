@@ -1,14 +1,14 @@
 
 task autoClock() {
 	clearTimer(T4);
-	while(time1[T4] < 14400) {
+	while(time1[T4] < 14700) {
 
 	}
 	stopTask(autonomous);
 	allElStop();
 	motor[rightClaw] = 0;
 	moveBackward(127);
-	wait1Msec(550);
+	wait1Msec(300);
 	stopDrive();
 }
 
@@ -30,16 +30,16 @@ void startauton() {
 	//Switch Case that actually runs the user choice
 	switch(count){
 	case 0:
-		startRed();
+		startRed12();
 		break;
 	case 1:
-		startBlue();
+		startBlue12();
 		break;
 	case 2:
-		startRed();
+		startRed12();
 		break;
 	case 3:
-		startBlue();
+		startBlue12();
 		break;
 	default:
 		displayLCDCenteredString(0, "No valid choice");

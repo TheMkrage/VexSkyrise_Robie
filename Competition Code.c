@@ -61,14 +61,17 @@ task usercontrol(){
 	nMotorEncoder[rightEl] = 0;
 	//driveStraightDistance(100, 63);
 	resetEn();
-	//startTask( driveTask );
-	//startTask( clawTask );
-	//startTask( elevatorTask );
+	startTask( driveTask );
+	startTask( clawTask );
+	startTask( elevatorTask );
 
 	startTask( runLCD);
 	while(true) {
 		//writeDebugStreamLine("Front Sonar: %i", SensorValue[frontSonar]);
 		if(vexRT[Btn7D] == 1) {
+			stopTask( driveTask);
+			stopTask(elevatorTask);
+			stopTask(clawTask);
 			startTask(autonomous);
 		}
 		//displayLCDCenteredString(0, "HOWDY");

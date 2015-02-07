@@ -1,5 +1,5 @@
 
-void startRed() {
+void startRed12() {
 		writeDebugStreamLine("STARTING BLUE");
 	startTask(autoClock);
 	///sets initial angle
@@ -66,7 +66,7 @@ void startRed() {
 	stopTask(PIDController);
 	resetEn();
 	startPID(RED_SKYRISE_BASE_ANGLE, gyro);
-	wait1Msec(1200);
+	wait1Msec(1300);
 	stopTask(PIDController);
 
 	resetEn();
@@ -97,13 +97,13 @@ void startRed() {
 
 	//move back
 	resetEn();
-	while(abs(SensorValue(leftDrive)) < 160 && abs(SensorValue(rightDrive)) < 160) {
+	while(abs(SensorValue(leftDrive)) < 150 && abs(SensorValue(rightDrive)) < 150) {
 		moveBackward(127);
 	}
 	stopDrive();
 
 	resetEn();
-	startPID(950, gyro);
+	startPID(930, gyro);
 	wait1Msec(1000);
 	stopTask(PIDController);
 	stopDrive();
@@ -116,7 +116,7 @@ void startRed() {
 
 	wait1Msec(300);
 	//move up to full extent
-	while(abs(nMotorEncoder[rightEl]) < RED_FULL_HEIGHT_ELEVATOR + 320) {
+	while(abs(nMotorEncoder[rightEl]) < RED_FULL_HEIGHT_ELEVATOR + 370) {
 		allElOnMax();
 	}
 	allElStop();
@@ -124,13 +124,13 @@ void startRed() {
 	//get gyro angle
 	stopTask(PIDController);
 	resetEn();
-	startPID(-400, gyro);
+	startPID(-320, gyro);
 	wait1Msec(1000);
 	stopTask(PIDController);
 
 	resetEn();
 	//move to yellow
-	startPID(RED_FORWARD_TO_BASE - 120, leftDrive, rightDrive, true);
+	startPID(RED_FORWARD_TO_BASE - 110, leftDrive, rightDrive, true);
 	wait1Msec(800);
 	stopTask(PIDControllerEnFriend);
 	stopTask(PIDControllerEn);
