@@ -39,7 +39,7 @@ void startauton() {
 		startRed12();
 		break;
 	case 3:
-		startBlue12();
+		startBlue2Mustard();
 		break;
 	default:
 		displayLCDCenteredString(0, "No valid choice");

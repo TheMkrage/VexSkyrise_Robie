@@ -109,7 +109,7 @@ void startRed12() {
 
 	startPID(initialAngle, gyro);
 	//initial strafe
-	motor[strafe] = -127;
+	motor[strafe] = -62;
 	wait1Msec(RED12_STRAFE_TIME);
 	motor[strafe] = 0;
 
