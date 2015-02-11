@@ -1,7 +1,7 @@
+/*Welcome to ElavatorTask!  Everything in this file controls the Elavator in Teleop*/
 
-
-#include "Basic Drive and Elavaotr Methods.c"
-
+//
+#include "Basic Drive and Elavator Methods.c"
 
 const int EL_2 = 601;
 const int EL_3 = 1315;
@@ -51,50 +51,50 @@ task elevatorTask () {
 				allElOnMax();
 				}else{
 				level4 = false;
-				}
 			}
-			//The Elavator
+		}
+		//The Elavator
 
-			//Up
-			if(vexRT[Ch3Xmtr2] > 20) {//if joystick is pressed more than 20, 20 is threshold, move vator
+		//Up
+		if(vexRT[Ch3Xmtr2] > 20) {//if joystick is pressed more than 20, 20 is threshold, move vator
+			int ElRate = vexRT[Ch3Xmtr2];
+			motor[rightEl] = ElRate;
+			motor[leftEl]= ElRate;
+			motor[bRightEl] = ElRate;
+			motor[bLeftEl] = ElRate;
+
+			//DOWN
+			}else if(vexRT[Ch3Xmtr2]< -20) {
+			if(SensorValue(bumperSwitch) == 0) {//if the switch is up
+				//let it go down if the button is not pressed
 				int ElRate = vexRT[Ch3Xmtr2];
 				motor[rightEl] = ElRate;
 				motor[leftEl]= ElRate;
 				motor[bRightEl] = ElRate;
 				motor[bLeftEl] = ElRate;
-
-				//DOWN
-			}else if(vexRT[Ch3Xmtr2]< -20) {
-				if(SensorValue(bumperSwitch) == 0) {//if the switch is up
-					//let it go down if the button is not pressed
-					int ElRate = vexRT[Ch3Xmtr2];
-					motor[rightEl] = ElRate;
-					motor[leftEl]= ElRate;
-					motor[bRightEl] = ElRate;
-					motor[bLeftEl] = ElRate;
-					}else {
-					allElStop(); //if switch is pressed, stop
-				}
-				}else {//if not then set stop elavators (if no joystick is pressed
-				allElStop();
+				}else {
+				allElStop(); //if switch is pressed, stop
 			}
+			}else {//if not then set stop elavators (if no joystick is pressed
+			allElStop();
+		}
 
-			//Automatic Elavator buttons
-			if(vexRT[Btn8DXmtr2] == 1) {//2
-				level1=true;
-				}else if(vexRT[Btn8RXmtr2] == 1) {
-				level2=true;
-				}else if(vexRT[Btn8UXmtr2] == 1) {//4
-				level3=true;
-				}else if(vexRT[Btn8LXmtr2] == 1) {//3
-				resetMotor=true;
+		//Automatic Elavator buttons
+		if(vexRT[Btn8DXmtr2] == 1) {//2
+			level1=true;
+			}else if(vexRT[Btn8RXmtr2] == 1) {
+			level2=true;
+			}else if(vexRT[Btn8UXmtr2] == 1) {//4
+			level3=true;
+			}else if(vexRT[Btn8LXmtr2] == 1) {//3
+			resetMotor=true;
 
-				//to be used in future for other encoder spots
-				}else if(vexRT[Btn7DXmtr2] == 1) { //1
-				level4 = true;
-				}else if(vexRT[Btn7RXmtr2] == 1) {//2
+			//to be used in future for other encoder spots
+			}else if(vexRT[Btn7DXmtr2] == 1) { //1
+			level4 = true;
+			}else if(vexRT[Btn7RXmtr2] == 1) {//2
 
-				}else if(vexRT[Btn7UXmtr2] == 1) {//3
+			}else if(vexRT[Btn7UXmtr2] == 1) {//3
 
 
 		}

@@ -19,7 +19,7 @@ task autoClock() {
 bool manualPickAuto = false;
 void startauton() {
 	if(manualPickAuto) {
-		startRed();
+		startRed8();
 		return;
 	}
 

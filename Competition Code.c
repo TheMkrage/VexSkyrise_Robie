@@ -22,6 +22,7 @@
 #pragma config(Motor,  port8,           leftFront,     tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port9,           leftBack,      tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port10,          bRightEl,      tmotorVex393_HBridge, openLoop, reversed)
+//Don't worry, the LCD uses UART2 by default so there is no need to configure that. Thanks RobotC.
 
 //Set To VEX Skyrise Competition
 #pragma systemFile
