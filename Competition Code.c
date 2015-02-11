@@ -40,9 +40,9 @@ int leftPIDSonar;
 #include "Vex_Competition_Includes.c"
 
 //Tasks
-#include "elavatorTask.c"
-#include "driveTask.c"
-#include "clawTask.c"
+#include "ElavatorTask.c"
+#include "DriveTask.c"
+#include "ClawTask.c"
 
 //LCD And Auto
 #include "LCDAuto.c"
