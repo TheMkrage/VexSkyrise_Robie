@@ -1,4 +1,5 @@
-
+/*This file contains various methods that you may use anywhere
+all the methods are pretty self-explanatory.*/
 
 void allElOnMax() {
 	motor[rightEl] = 127;
