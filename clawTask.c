@@ -1,35 +1,37 @@
+/* This class controls the claw and all its contents */
 
+//Killswitches
 bool killSwitch = false;
 bool killSwitchDrive = false;
 
 task clawTask () {
-	while(1){
+	while(true){
 
 		//The Claw
-		//claw controls
-		if(vexRT[Btn6UXmtr2] == 1) {
+		//Claw controls
+		if(vexRT[Btn6UXmtr2] == 1) { //close
 			motor[rightClaw] = 127;
 
-			}else if(vexRT[Btn6DXmtr2] == 1) {
+			}else if(vexRT[Btn6DXmtr2] == 1) { //open
 			motor[rightClaw] = -127;
 
-			}else if(vexRT[Btn5UXmtr2] == 1) {
+			}else if(vexRT[Btn5UXmtr2] == 1) { //autoclaw. hold to keep skyrise in place and not burn out motors
 			motor[rightClaw] = 20;
 			}else {
 			motor[rightClaw] = 0;
 		}
 
-		if(vexRT[Btn5DXmtr2] == 1) {
+		if(vexRT[Btn5DXmtr2] == 1) {//kills elevator
 			killSwitch = true;
 		}
 
-		if(killSwitch) {
+		if(killSwitch) { //kill elevator
 			allElStop();
 			stopTask(  elevatorTask );
 			startTask( elevatorTask );
 			killSwitch =  false;
 		}
-		if(killSwitchDrive) {
+		if(killSwitchDrive) { //kill drive
 			motor[rightBack] = 0;
 			motor[rightFront] = 0;
 			motor[leftBack] = 0;

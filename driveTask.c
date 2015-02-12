@@ -1,8 +1,8 @@
 /* Main class for drive train
-	In this class, there is:
-		- Normal Drive (driveHalo)
-		- Gyro Drive (gyroDrive)
-			This doesn't work, vex gyros do not update fast enough for this to be successful
+In this class, there is:
+- Normal Drive (driveHalo)
+- Gyro Drive (gyroDrive)
+This doesn't work, vex gyros do not update fast enough for this to be successful
 */
 
 #include "PIDController.c"
@@ -14,7 +14,7 @@ bool angleNotSet = true;
 float getAngle() {
 	if(SensorValue[gyro] < 0) {
 		return 3600 + SensorValue[gyro];
-	}else {
+		}else {
 		return SensorValue[gyro];
 	}
 }
@@ -26,9 +26,9 @@ float getDesiredAngle(float turn) {
 	//writeDebugStreamLine("aim: %f3.3",aim);
 	if(aim < 0) {
 		return aim + 3600;
-	}else if(aim > 3600) {
+		}else if(aim > 3600) {
 		return aim - 3600;
-	}else {
+		}else {
 		return aim;
 	}
 }
@@ -47,32 +47,32 @@ float skim(float v) {
 
 //drives with gyro asssist
 void driveHalo(float throttle, float turn) {
-		float gyroKP = .1;
-		if(throttle < 30 && throttle > -30) {
-			throttle = 0;
-		}
-
-		float currentAngle = getAngle();
-		float desiredAngle = getDesiredAngle(turn);
-		writeDebugStreamLine("current: %3.3f desired: %3.3f", currentAngle, desiredAngle);
-		float modifiedTurn = (currentAngle - desiredAngle) * gyroKP;
-		writeDebugStreamLine("modified: %5.3f Throttle: %5.3f", modifiedTurn, throttle);
-
-		float t_left = throttle + modifiedTurn;
-		float t_right = throttle - modifiedTurn;
-		writeDebugStreamLine("left: %4.3f, right %4.3f", t_left, t_right);
-
-		int left = (int)t_left;
-		int right = (int)t_right;
-
-		//negative because Vinnie did it
-		writeDebugStreamLine("left: %i, right %i", left, right);
-		motor[leftBack] = left;
-		motor[leftFront] = left;
-		motor[rightFront] = right;
-		motor[rightFront] = right;
-		writeDebugStreamLine(" ");
+	float gyroKP = .1;
+	if(throttle < 30 && throttle > -30) {
+		throttle = 0;
 	}
+
+	float currentAngle = getAngle();
+	float desiredAngle = getDesiredAngle(turn);
+	writeDebugStreamLine("current: %3.3f desired: %3.3f", currentAngle, desiredAngle);
+	float modifiedTurn = (currentAngle - desiredAngle) * gyroKP;
+	writeDebugStreamLine("modified: %5.3f Throttle: %5.3f", modifiedTurn, throttle);
+
+	float t_left = throttle + modifiedTurn;
+	float t_right = throttle - modifiedTurn;
+	writeDebugStreamLine("left: %4.3f, right %4.3f", t_left, t_right);
+
+	int left = (int)t_left;
+	int right = (int)t_right;
+
+	//negative because Vinnie did it
+	writeDebugStreamLine("left: %i, right %i", left, right);
+	motor[leftBack] = left;
+	motor[leftFront] = left;
+	motor[rightFront] = right;
+	motor[rightFront] = right;
+	writeDebugStreamLine(" ");
+}
 
 //the drive used normally, it is a very simple working drive equation
 void normalDrive() {
@@ -89,7 +89,7 @@ void normalDrive() {
 			startPID(SensorValue[gyro], in1);
 			angleNotSet = false;
 		}
-	}else{
+		}else{
 		angleNotSet = true;
 		stopTask(PIDController);
 
