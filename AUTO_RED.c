@@ -1,3 +1,13 @@
+void startRedStrafe() {
+	motor[strafe] = -127;
+	wait1Msec(RED8_STRAFE_TIME);
+	motor[strafe] = 0;
+	wait1Msec(RED8_STRAFE_TIME);
+	motor[strafe] = 127;
+	wait1Msec(RED8_STRAFE_TIME * 2);
+	motor[strafe] = 0;
+}
+
 void startRed8() {
 		writeDebugStreamLine("STARTING Red 12");
 	startTask(autoClock);

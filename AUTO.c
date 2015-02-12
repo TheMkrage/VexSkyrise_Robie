@@ -13,6 +13,10 @@ task autoClock() {
 	stopDrive();
 }
 
+void startSmallPoleAuto() {
+	//to be added later
+}
+
 #include "AUTO_CONSTANTS.c"
 #include "AUTO_RED.c"
 #include "AUTO_BLUE.c"
@@ -45,6 +49,28 @@ void startauton() {
 		break;
 	case 3:
 		startBlue12();
+		break;
+	case 4:
+		startRedStrafe();
+		break;
+	case 5:
+		startBlueStrafe();
+		break;
+	case 6:
+		motor[strafe] = -127;
+		wait1Msec(3000);
+		motor[strafe] = 0;
+		break;
+	case 7:
+		motor[strafe] = 127;
+		wait1Msec(3000);
+		motor[strafe] = 0;
+		break;
+	case 8:
+		startSmallPoleAuto();
+		break;
+	case 9:
+
 		break;
 	default:
 		displayLCDCenteredString(0, "No valid choice");

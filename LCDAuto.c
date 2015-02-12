@@ -175,7 +175,22 @@ task runLCD(){
 				count++;
 			}
 			break;
-		case 8:
+			case 8:
+			//Display fourth choice
+			displayLCDCenteredString(0, "Small Pole");
+			displayLCDCenteredString(1, "<         Enter        >");
+			waitForPress();
+			//Increment or decrement "count" based on button press
+			if(nLCDButtons == leftButton){
+				waitForRelease();
+				count--;
+			}
+			else if(nLCDButtons == rightButton){ //since this is the max choice, moving right will loop back to beginning again
+				waitForRelease();
+				count ++;
+			}
+			break;
+		case 9:
 			//Display fourth choice
 			displayLCDCenteredString(0, "Do Not Move");
 			displayLCDCenteredString(1, "<         Enter        >");
@@ -189,6 +204,7 @@ task runLCD(){
 				waitForRelease();
 				count = 0;
 			}
+			break;
 		default:
 			count = 0;
 			break;
