@@ -17,8 +17,10 @@ task autoClock() {
 #include "AUTO_BLUE.c"
 
 bool manualPickAuto = false;
+
+//This is called at the beginning of auto
 void startauton() {
-	if(manualPickAuto) {
+	if(manualPickAuto) { //in case you want to manually select auto
 		startRed8();
 		return;
 	}
@@ -28,6 +30,8 @@ void startauton() {
 	clearLCDLine(0);
 	clearLCDLine(1);
 	//Switch Case that actually runs the user choice
+	//this switch case chooses the auto to run based off of the LCD Screen's choice
+	//to see how count is choosen, reference LCDAuto.c
 	switch(count){
 	case 0:
 		startRed8();

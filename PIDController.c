@@ -1,4 +1,3 @@
-
 #define PID_SENSOR_INDEX    myEncoder
 
 const int PID_DRIVE_MAX = 127;
