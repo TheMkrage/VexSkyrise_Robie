@@ -1,4 +1,5 @@
 
+//task that runs with auto and will backup is 300 milliseconds are left in auto
 task autoClock() {
 	clearTimer(T4);
 	while(time1[T4] < 14700) {
@@ -43,7 +44,7 @@ void startauton() {
 		startRed12();
 		break;
 	case 3:
-		startBlue2Mustard();
+		startBlue12();
 		break;
 	default:
 		displayLCDCenteredString(0, "No valid choice");
