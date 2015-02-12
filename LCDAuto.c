@@ -112,9 +112,83 @@ task runLCD(){
 			}
 			else if(nLCDButtons == rightButton){ //since this is the max choice, moving right will loop back to beginning again
 				waitForRelease();
-				count = 0;
+				count++;
 			}
 			break;
+		case 4:
+			//Display fourth choice
+			displayLCDCenteredString(0, "Red Strafe Base Point");
+			displayLCDCenteredString(1, "<         Enter        >");
+			waitForPress();
+			//Increment or decrement "count" based on button press
+			if(nLCDButtons == leftButton){
+				waitForRelease();
+				count--;
+			}
+			else if(nLCDButtons == rightButton){ //since this is the max choice, moving right will loop back to beginning again
+				waitForRelease();
+				count++;
+			}
+			break;
+		case 5:
+			//Display fourth choice
+			displayLCDCenteredString(0, "Blue Strafe Base Point");
+			displayLCDCenteredString(1, "<         Enter        >");
+			waitForPress();
+			//Increment or decrement "count" based on button press
+			if(nLCDButtons == leftButton){
+				waitForRelease();
+				count--;
+			}
+			else if(nLCDButtons == rightButton){ //since this is the max choice, moving right will loop back to beginning again
+				waitForRelease();
+				count++;
+			}
+			break;
+		case 6:
+			//Display fourth choice
+			displayLCDCenteredString(0, "Strafe Right");
+			displayLCDCenteredString(1, "<         Enter        >");
+			waitForPress();
+			//Increment or decrement "count" based on button press
+			if(nLCDButtons == leftButton){
+				waitForRelease();
+				count--;
+			}
+			else if(nLCDButtons == rightButton){ //since this is the max choice, moving right will loop back to beginning again
+				waitForRelease();
+				count++;
+			}
+			break;
+		case 7:
+			//Display fourth choice
+			displayLCDCenteredString(0, "Strafe Left");
+			displayLCDCenteredString(1, "<         Enter        >");
+			waitForPress();
+			//Increment or decrement "count" based on button press
+			if(nLCDButtons == leftButton){
+				waitForRelease();
+				count--;
+			}
+			else if(nLCDButtons == rightButton){ //since this is the max choice, moving right will loop back to beginning again
+				waitForRelease();
+				count++;
+			}
+			break;
+		case 8:
+			//Display fourth choice
+			displayLCDCenteredString(0, "Do Not Move");
+			displayLCDCenteredString(1, "<         Enter        >");
+			waitForPress();
+			//Increment or decrement "count" based on button press
+			if(nLCDButtons == leftButton){
+				waitForRelease();
+				count--;
+			}
+			else if(nLCDButtons == rightButton){ //since this is the max choice, moving right will loop back to beginning again
+				waitForRelease();
+				count = 0;
+			}
 		default:
 			count = 0;
 			break;
