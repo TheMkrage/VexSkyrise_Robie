@@ -62,7 +62,7 @@ task runLCD(){
 			//Increment or decrement "count" based on button press
 			if(nLCDButtons == leftButton) { //since this is option 0, hitting left will bring the LCD to the max option
 				waitForRelease();
-				count = 3;
+				count = 9;
 			}
 			else if(nLCDButtons == rightButton)
 			{
@@ -117,7 +117,7 @@ task runLCD(){
 			break;
 		case 4:
 			//Display fourth choice
-			displayLCDCenteredString(0, "Red Strafe Base Point");
+			displayLCDCenteredString(0, "Red Strafe Base");
 			displayLCDCenteredString(1, "<         Enter        >");
 			waitForPress();
 			//Increment or decrement "count" based on button press
@@ -132,7 +132,7 @@ task runLCD(){
 			break;
 		case 5:
 			//Display fourth choice
-			displayLCDCenteredString(0, "Blue Strafe Base Point");
+			displayLCDCenteredString(0, "Blue Strafe Base");
 			displayLCDCenteredString(1, "<         Enter        >");
 			waitForPress();
 			//Increment or decrement "count" based on button press

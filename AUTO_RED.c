@@ -10,13 +10,13 @@ void startRedStrafe() {
 
 void startRed8() {
 	writeDebugStreamLine("STARTING Red 12");
-	startTask(autoClock);
+	//startTask(autoClock);
 	///sets initial angle
 	int initialAngle = SensorValue(gyro);
 
 	startPID(initialAngle, gyro);
 	//initial strafe
-	motor[strafe] = -127;
+	motor[strafe] = -80;
 	wait1Msec(RED8_STRAFE_TIME);
 	motor[strafe] = 0;
 
@@ -76,7 +76,7 @@ void startRed8() {
 	stopTask(PIDController);
 	resetEn();
 	startPID(RED8_SKYRISE_BASE_ANGLE, gyro);
-	wait1Msec(1600);
+	wait1Msec(1800);
 	stopTask(PIDController);
 
 	resetEn();
@@ -235,6 +235,9 @@ void startRed12() {
 	stopDrive();
 
 	wait1Msec(300);
+
+	resetEn();
+	nMotorEncoder[rightEl] = 0;
 	//move up to full extent
 	while(abs(nMotorEncoder[rightEl]) < RED12_ELEVATOR_CUBE_HEIGHT) {
 		allElOnMax();
@@ -248,13 +251,12 @@ void startRed12() {
 	wait1Msec(1000);
 	stopTask(PIDController);
 
-	resetEn();
+		resetEn();
 	//move to yellow
-	startPID(RED12_FORWARD_TO_BASE_WITH_CUBE, leftDrive, rightDrive, true);
-	wait1Msec(800);
-	stopTask(PIDControllerEnFriend);
-	stopTask(PIDControllerEn);
-	stopDrive();
+	while(abs(SensorValue[rightDrive]) < RED12_FORWARD_TO_BASE_WITH_CUBE) {
+		moveForward(62);
+	}
+stopDrive();
 
 	//bring down el
 	clearTimer(T1);

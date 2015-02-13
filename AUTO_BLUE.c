@@ -10,7 +10,7 @@ void startBlueStrafe() {
 
 void startBlue8() {
 		writeDebugStreamLine("STARTING BLUE 12");
-	startTask(autoClock);
+	//startTask(autoClock);
 	///sets initial angle
 	int initialAngle = SensorValue(gyro);
 
@@ -227,6 +227,8 @@ void startBlue12() {
 	stopDrive();
 
 	wait1Msec(300);
+
+	nMotorEncoder[rightEl] = 0;
 	//move up to full extent
 	while(abs(nMotorEncoder[rightEl]) < BLUE12_ELEVATOR_CUBE_HEIGHT) {
 		allElOnMax();
