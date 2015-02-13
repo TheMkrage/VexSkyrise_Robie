@@ -36,12 +36,12 @@ void startSmallPoleAuto() {
 	wait1Msec(500);
 
 	resetEn();
-	while(abs(SensorValue[rightDrive]) < 110) {
+	while(abs(SensorValue[rightDrive]) < 130) {
 		moveBackward(62);
 	}
 	stopDrive();
 
-	while(abs(nMotorEncoder[rightEl]) > 200 && SensorValue[bumperSwitch] == 0) {
+	while(abs(nMotorEncoder[rightEl]) > 100 && SensorValue[bumperSwitch] == 0) {
 		allElOnMaxDown();
 	}
 	allElStop();
@@ -106,6 +106,12 @@ void startSmallPoleAuto() {
 	}
 	allElStop();
 
+
+		resetEn();
+	while(abs(SensorValue[rightDrive]) < 400) {
+		moveBackward(62);
+	}
+	stopDrive();
 }
 
 #include "AUTO_CONSTANTS.c"
