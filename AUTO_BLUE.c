@@ -66,7 +66,7 @@ void startBlue8() {
 
 	//moveback a little
 	resetEn();
-	while(abs(SensorValue(leftDrive)) < 190 && abs(SensorValue(rightDrive)) < 190) {
+	while(abs(SensorValue(leftDrive)) < BLUE8_FIRST_BACKWARDS_FROM_MUSTARD_HOLDER && abs(SensorValue(rightDrive)) < BLUE8_FIRST_BACKWARDS_FROM_MUSTARD_HOLDER) {
 		moveBackward(40);
 	}
 	stopDrive();
@@ -106,7 +106,7 @@ void startBlue8() {
 
 	//move back
 	resetEn();
-	while(abs(SensorValue(leftDrive)) < 150 && abs(SensorValue(rightDrive)) < 150) {
+	while(abs(SensorValue(leftDrive)) < BLUE8_FINAL_BACKWARDS && abs(SensorValue(rightDrive)) < BLUE8_FINAL_BACKWARDS) {
 		moveBackward(127);
 	}
 	stopDrive();
@@ -169,7 +169,7 @@ void startBlue12() {
 
 	//moveback a little
 	resetEn();
-	while(abs(SensorValue(leftDrive)) < 190 && abs(SensorValue(rightDrive)) < 190) {
+	while(abs(SensorValue(leftDrive)) < BLUE12_FIRST_BACKWARDS_FROM_MUSTARD_HOLDER && abs(SensorValue(rightDrive)) < BLUE12_FIRST_BACKWARDS_FROM_MUSTARD_HOLDER) {
 		moveBackward(40);
 	}
 	stopDrive();
@@ -209,26 +209,26 @@ void startBlue12() {
 
 	//move back
 	resetEn();
-	while(abs(SensorValue(leftDrive)) < 150 && abs(SensorValue(rightDrive)) < 150) {
+	while(abs(SensorValue(leftDrive)) < BLUE12_BACKWARDS_FROM_BASE  && abs(SensorValue(rightDrive)) < BLUE12_BACKWARDS_FROM_BASE ) {
 		moveBackward(127);
 	}
 	stopDrive();
 
 	resetEn();
-	startPID(-900, gyro);
+	startPID(BLUE12_ANGLE_TO_GET_CUBE, gyro);
 	wait1Msec(1000);
 	stopTask(PIDController);
 	stopDrive();
 
 	resetEn();
-	while(abs(SensorValue(leftDrive)) < 320 && abs(SensorValue(rightDrive)) < 320) {
+	while(abs(SensorValue(leftDrive)) < BLUE12_FORWARD_TO_CUBE && abs(SensorValue(rightDrive)) < BLUE12_FORWARD_TO_CUBE) {
 		moveForward(127);
 	}
 	stopDrive();
 
 	wait1Msec(300);
 	//move up to full extent
-	while(abs(nMotorEncoder[rightEl]) < BLUE12_FULL_HEIGHT_ELEVATOR + 370) {
+	while(abs(nMotorEncoder[rightEl]) < BLUE12_ELEVATOR_CUBE_HEIGHT) {
 		allElOnMax();
 	}
 	allElStop();
@@ -236,13 +236,13 @@ void startBlue12() {
 	//get gyro angle
 	stopTask(PIDController);
 	resetEn();
-	startPID(400, gyro);
+	startPID(BLUE12_ANGLE_TO_GET_TO_BASE_WITH_CUBE, gyro);
 	wait1Msec(1000);
 	stopTask(PIDController);
 
 	resetEn();
 	//move to yellow
-	while(abs(SensorValue[rightDrive]) < 80) {
+	while(abs(SensorValue[rightDrive]) < BLUE12_FORWARD_TO_BASE_WITH_CUBE) {
 		moveForward(62);
 	}
 stopDrive();
