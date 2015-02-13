@@ -113,6 +113,10 @@ void startRed8() {
 	}
 	stopDrive();
 }
+
+
+
+
 void startRed12() {
 	writeDebugStreamLine("STARTING Red 12");
 	startTask(autoClock);
@@ -122,7 +126,7 @@ void startRed12() {
 
 	startPID(initialAngle, gyro);
 	//initial strafe
-	motor[strafe] = -62;
+	motor[strafe] = -80;
 	wait1Msec(RED12_STRAFE_TIME);
 	motor[strafe] = 0;
 

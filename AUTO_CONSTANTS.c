@@ -1,3 +1,23 @@
+/* Welcome Nick!
+If you are reading this, chances are you are at state! I hope its cool.
+
+To run auto, make sure that in Competition Code.c , the bool called "testingAuto" is set to true (Ctrl F to find it).
+Then, you download code to robot and start.
+Button 7D will run auto.  Prior to running auto, MAKE SURE, that the correct auto is selected on LCD.
+If you feel lazy, there is a bool called "manualPickAuto".  Set this to true and then place the method of the auto you wish to use in the if statement.
+Just make sure to change it back if you use this feature
+
+I'm pretty sure all autos have the right path, but if one does not, you are a smart boy and do not be afraid to call.
+
+Here is what you need to do to tune auto (and I recommend in this order)
+BLUE12
+BLUE8 (not a priority, but if you have time)
+RED12
+RED8  (not a priority, but if you have time)
+Make small pole auto (same 4 both sides)
+Test all other auto (the strafe ones) and make sure everything works because they have never been testing. */
+
+
 const int  BLUE8_STRAFE_TIME =350;
 const int  BLUE8_SKYRISE_BASE_ANGLE =500;
 const int  BLUE8_MUSTARD_FORWARD =-92;
