@@ -15,25 +15,96 @@ task autoClock() {
 
 void startSmallPoleAuto() {
 	nMotorEncoder[rightEl] =0;
-	while(abs(nMotorEncoder[rightEl]) < 1600) {
+	int initialAngle = SensorValue[gyro];
+
+	while(abs(nMotorEncoder[rightEl]) < 1800) {
 		allElOnMax();
 	}
+	allElStop();
 
 	resetEn();
-	while(abs(SensorValue[rightDrive]) < 80) {
+	while(abs(SensorValue[rightDrive]) < 120) {
 		moveForward(62);
 	}
 	stopDrive();
 
-	while(abs(nMotorEncoder[rightEl]) > 1200) {
+	while(abs(nMotorEncoder[rightEl]) > 1000) {
 		allElOnMaxDown();
 	}
+	allElStop();
+
+	wait1Msec(500);
 
 	resetEn();
-	while(abs(SensorValue[rightDrive]) < 100) {
+	while(abs(SensorValue[rightDrive]) < 90) {
 		moveBackward(62);
 	}
 	stopDrive();
+
+	while(abs(nMotorEncoder[rightEl]) > 200 && SensorValue[bumperSwitch] == 0) {
+		allElOnMaxDown();
+	}
+	allElStop();
+
+	stopTask(PIDController);
+	resetEn();
+	startPID(930, gyro);
+	wait1Msec(1800);
+	stopTask(PIDController);
+
+	resetEn();
+	while(abs(SensorValue[rightDrive]) < 320) {
+		moveForward(62);
+	}
+	stopDrive();
+
+	nMotorEncoder[rightEl] = 0;
+	while(abs(nMotorEncoder[rightEl]) < 600) {
+		allElOnMaxDown();
+	}
+	allElStop();
+
+	resetEn();
+	while(abs(SensorValue[rightDrive]) < 320) {
+		moveBackward(62);
+	}
+	stopDrive();
+
+	stopTask(PIDController);
+	resetEn();
+	startPID(initialAngle, gyro);
+	wait1Msec(1800);
+	stopTask(PIDController);
+
+
+
+	while(abs(nMotorEncoder[rightEl]) < 1800) {
+		allElOnMax();
+	}
+	allElStop();
+
+	resetEn();
+	while(abs(SensorValue[rightDrive]) < 100) {
+		moveForward(62);
+	}
+	stopDrive();
+
+	while(abs(nMotorEncoder[rightEl]) > 1000) {
+		allElOnMaxDown();
+	}
+	allElStop();
+
+	resetEn();
+	while(abs(SensorValue[rightDrive]) < 70) {
+		moveBackward(62);
+	}
+	stopDrive();
+
+	while(abs(nMotorEncoder[rightEl]) > 0) {
+		allElOnMaxDown();
+	}
+	allElStop();
+
 }
 
 #include "AUTO_CONSTANTS.c"
