@@ -23,7 +23,7 @@ void startSmallPoleAuto() {
 	allElStop();
 
 	resetEn();
-	while(abs(SensorValue[rightDrive]) < 120) {
+	while(abs(SensorValue[rightDrive]) < 130) {
 		moveForward(62);
 	}
 	stopDrive();
@@ -36,7 +36,7 @@ void startSmallPoleAuto() {
 	wait1Msec(500);
 
 	resetEn();
-	while(abs(SensorValue[rightDrive]) < 90) {
+	while(abs(SensorValue[rightDrive]) < 110) {
 		moveBackward(62);
 	}
 	stopDrive();
@@ -59,13 +59,14 @@ void startSmallPoleAuto() {
 	stopDrive();
 
 	nMotorEncoder[rightEl] = 0;
-	while(abs(nMotorEncoder[rightEl]) < 600) {
-		allElOnMaxDown();
+	clearTimer(T1);
+	while(abs(nMotorEncoder[rightEl]) < 1000 && time1[T1] < 2000) {
+		allElOnMax();
 	}
 	allElStop();
 
 	resetEn();
-	while(abs(SensorValue[rightDrive]) < 320) {
+	while(abs(SensorValue[rightDrive]) < 340) {
 		moveBackward(62);
 	}
 	stopDrive();
@@ -78,7 +79,7 @@ void startSmallPoleAuto() {
 
 
 
-	while(abs(nMotorEncoder[rightEl]) < 1800) {
+	while(abs(nMotorEncoder[rightEl]) < 1900) {
 		allElOnMax();
 	}
 	allElStop();
