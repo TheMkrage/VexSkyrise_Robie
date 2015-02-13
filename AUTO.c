@@ -14,7 +14,26 @@ task autoClock() {
 }
 
 void startSmallPoleAuto() {
-	//to be added later
+	nMotorEncoder[rightEl] =0;
+	while(abs(nMotorEncoder[rightEl]) < 1600) {
+		allElOnMax();
+	}
+
+	resetEn();
+	while(abs(SensorValue[rightDrive]) < 80) {
+		moveForward(62);
+	}
+	stopDrive();
+
+	while(abs(nMotorEncoder[rightEl]) > 1200) {
+		allElOnMaxDown();
+	}
+
+	resetEn();
+	while(abs(SensorValue[rightDrive]) < 100) {
+		moveBackward(62);
+	}
+	stopDrive();
 }
 
 #include "AUTO_CONSTANTS.c"
