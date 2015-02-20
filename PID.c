@@ -14,3 +14,25 @@ float PIDRun(struct PID controller, float error) {
 	controller.previousError = error;
 	wait1Msec(25);
 }
+
+int requestedGyroAngle;
+struct PID gyroPID;
+void 	PIDStartGyroTask(struct PID controller, int requested) {
+	requestedGyroAngle = requested;
+	startTask(gyro);
+	gyroPID = controller;
+
+}
+
+
+task PIDGyroController() {
+		int pidDrive = PIDRun(gyroPID, SensorValue[gyro] - requestedGyroAngle);
+		motor[leftFront] = pidDrive;
+		motor[leftBack] = pidDrive;
+		motor[rightFront] = -pidDrive;
+		motor[rightBack] = -pidDrive;
+}
+
+void 	PIDStopGyroTask(struct PID controller) {
+	stopTask(gyro);
+}

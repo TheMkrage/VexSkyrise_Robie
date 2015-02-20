@@ -269,11 +269,16 @@ void startBlue2Mustard() {
 	///sets initial angle
 	int initialAngle = SensorValue(gyro);
 
-	startPID(initialAngle, gyro);
+	PID gyroPID;
+	PIDInit(gyroPID, .4, .25);
+	PIDStartGyroTask(gyroPID, SensorValue[gyro]);
+
 	//initial strafe
 	motor[strafe] = 80;
 	wait1Msec(BLUE12_STRAFE_TIME);
 	motor[strafe] = 0;
+
+	PIDStopGyroTask(gyroPID);
 
 	//finish realigning
 	wait1Msec(300);
