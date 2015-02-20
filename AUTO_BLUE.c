@@ -14,6 +14,21 @@ void startBlue8() {
 	///sets initial angle
 	int initialAngle = SensorValue(gyro);
 
+	PID encoderPID;
+	PIDInit(encoderPID, .3, 1);
+	clearTimer(T1);
+	while(time1[T1] < 10000) {
+		int throttle = -PIDRun(encoderPID, ((SensorValue[rightDrive] - SensorValue[leftDrive])/2) - 1000);
+		int turn = PIDRun(gyroPID, (SensorValue[gyro]) - initialAngle);
+		//int turn = 0;
+		motor[leftFront] = throttle + turn;
+		motor[leftBack] = throttle + turn;
+		motor[rightFront] = throttle - turn;
+		motor[rightBack] = throttle - turn;
+	}
+
+	wait1Msec(40000);
+
 	startPID(initialAngle, gyro);
 	//initial strafe
 	motor[strafe] = 127;
@@ -111,42 +126,43 @@ void startBlue8() {
 	}
 	stopDrive();
 }
+
+
+
+
+
+
+
 void startBlue12() {
 		writeDebugStreamLine("STARTING BLUE 12");
 	startTask(autoClock);
 	///sets initial angle
 	int initialAngle = SensorValue(gyro);
 
-	startPID(initialAngle, gyro);
+	PID gyroPID;
+	PIDInit(gyroPID, .4, .25);
+	PIDStartGyroTask(gyroPID, SensorValue[gyro]);
+
 	//initial strafe
 	motor[strafe] = 80;
 	wait1Msec(BLUE12_STRAFE_TIME);
 	motor[strafe] = 0;
 
-	//finish realigning
-	wait1Msec(300);
-	stopTask(PIDController);
+	PIDStopGyroTask(gyroPID);
 
 
-
-	/*startPID(500, leftDrive, rightDrive, true);
-	wait1Msec(3000);
-	stopTask(PIDControllerEnFriend);
-	stopTask(PIDControllerEn);
-	stopDrive();
-	wait1Msec(200);
-	startPID(initialAngle, gyro);
-	wait1Msec(400);
-	stopDrive();*/
-
-
-	//move forward to mustard holder
-	startPID(BLUE12_MUSTARD_FORWARD, leftDrive, rightDrive, true);
-	wait1Msec(700);
-	stopTask(PIDControllerEnFriend);
-	stopTask(PIDControllerEn);
-	stopDrive();
-	wait1Msec(300);
+	//move Forward
+	PID encoderPID;
+	PIDInit(encoderPID, .3, .1);
+	clearTimer(T1);
+	while(time1[T1] < 700) {
+		int throttle = PIDRun(encoderPID, ((SensorValue[rightDrive] + SensorValue[leftDrive])/2) - BLUE12_MUSTARD_FORWARD);
+		int turn = PIDRun(gyroPID, (SensorValue[gyro]) - initialAngle);
+		motor[leftFront] = throttle + turn;
+		motor[leftBack] = throttle + turn;
+		motor[rightFront] = throttle - turn;
+		motor[rightBack] = throttle - turn;
+	}
 
 	resetEn();
 	//Move up little, grab, continue

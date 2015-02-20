@@ -54,6 +54,8 @@ void pre_auton() {
 	resetEn();
 }
 
+
+
 //Ran in Auto
 task autonomous() {
 	//Reset Encoders and then run the begin auto method found in AUTO.c
