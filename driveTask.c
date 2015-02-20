@@ -6,6 +6,7 @@ This doesn't work, vex gyros do not update fast enough for this to be successful
 */
 
 #include "PIDController.c"
+#include "PID.c"
 
 int driveMult;
 bool angleNotSet = true;
@@ -74,24 +75,33 @@ void driveHalo(float throttle, float turn) {
 	writeDebugStreamLine(" ");
 }
 
+PID straightStrafe;
+float requestedAngle;
 //the drive used normally, it is a very simple working drive equation
 void normalDrive() {
 
 	//sets speeds for dleft
-	int leftSpeed;
-	int rightSpeed;
-	leftSpeed = (vexRT[Ch1] + vexRT[Ch3])/driveMult; //speed for left motors
-	rightSpeed =(vexRT[Ch3] - vexRT[Ch1])/driveMult; //speed for right motors
+	int	leftSpeed = (vexRT[Ch1] + vexRT[Ch3])/driveMult; //speed for left motors
+	int rightSpeed =(vexRT[Ch3] - vexRT[Ch1])/driveMult; //speed for right motors
 
 	//straight strafing button, when pressed, the left and right drive will work to keep the same angle, strafe wheel still moves the robot however
 	if(vexRT[Btn6U] == 1) {
 		if(angleNotSet == true) {
-			startPID(SensorValue[gyro], in1);
+			requestedAngle = SensorValue[gyro];
+			//startPID(SensorValue[gyro], in1);
 			angleNotSet = false;
 		}
-		}else{
+		int pidDrive = PIDRun(straightStrafe, SensorValue[gyro] - requestedAngle);
+		motor[leftFront] = pidDrive;
+		motor[leftBack] = pidDrive;
+		motor[rightFront] = -pidDrive;
+		motor[rightBack] = -pidDrive;
+
+	}else{
+
+		requestedAngle = NULL;
+
 		angleNotSet = true;
-		stopTask(PIDController);
 
 		//thresholds
 		if(leftSpeed < 20 && leftSpeed > -20) {
@@ -119,6 +129,7 @@ void gyroDrive() {
 }
 
 task driveTask (){
+	PIDInit(straightStrafe, .4, .25);
 	while(true){
 		//Set Encoders to 0 on bumperswitch press
 		if(SensorValue(bumperSwitch)==1){ //if the elevator is all the way down, set encoder to 0

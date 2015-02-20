@@ -96,5 +96,8 @@ task usercontrol(){
 			wait1Msec(750);
 			SensorValue[led1] = false;
 		}
+
+
+
 	}
 }
