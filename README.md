@@ -12,7 +12,8 @@ Our robot can stack a 6 section tall skyrsie along with 6 cubes on the skyrise i
 5. 1 Bumper Switch to Reset the Gyro
 
 ### Skills
-*Robot:* 
+*Robot:* 43
+*Programming:* 10
 
 ## Code Overview
 
@@ -20,7 +21,7 @@ Our robot can stack a 6 section tall skyrsie along with 6 cubes on the skyrise i
 1. LCD Auto Picker
 2. Straight Strafing
 3. 8 Point and 12 Point Auto
-4. PID Loops that are used in Auto
+4. PID structs that are used in Auto
 
 Auto  | Method Name
 ------------- | -------------
@@ -28,3 +29,6 @@ Auto  | Method Name
 12 Point Blue  | startBlue12();
 8 Point Red  | startRed8();
 8 Point Blue | startBlue8();
+Small Pole | startSmallPoleAuto();
+Red Strafe | startRedStrafe();
+Blue Strafe | startBlueStrafe();
