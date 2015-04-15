@@ -92,7 +92,7 @@ task usercontrol(){
 
 		if(SensorValue(gyroBumper) == 1) { //if the gyro reset button is pressed, reset the gyro
 			resetGyro();
-
+			PlaySoundFile("gyroReset.wav");
 			//flash LED to show that it is done
 			SensorValue[led1] = true;
 			wait1Msec(750);
