@@ -10,9 +10,17 @@ task clawTask () {
 		//The Claw
 		//Claw controls
 		if(vexRT[Btn6UXmtr2] == 1) { //close
+			if(!bSoundActive) {
+				playSoundFile("2.wav");
+
+			}
+
 			motor[rightClaw] = 127;
 
 			}else if(vexRT[Btn6DXmtr2] == 1) { //open
+			if(!bSoundActive) {
+				playSoundFile("3.wav");
+			}
 			motor[rightClaw] = -127;
 
 			}else if(vexRT[Btn5UXmtr2] == 1) { //autoclaw. hold to keep skyrise in place and not burn out motors

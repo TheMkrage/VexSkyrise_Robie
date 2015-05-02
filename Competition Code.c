@@ -90,7 +90,11 @@ task usercontrol(){
 			startTask(autonomous);
 		}
 
+		if(vexRT[Btn7R] == 1) {
+			playSoundFile("4.wav");
+		}
 		if(SensorValue(gyroBumper) == 1) { //if the gyro reset button is pressed, reset the gyro
+			 PlaySoundFile("1.wav");
 			resetGyro();
 			PlaySoundFile("gyroReset.wav");
 			//flash LED to show that it is done

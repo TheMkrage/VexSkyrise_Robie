@@ -8,6 +8,10 @@ This doesn't work, vex gyros do not update fast enough for this to be successful
 #include "PIDController.c"
 #include "PID.c"
 
+PID gyroDrivePID;
+PID driveLeftDrivePID;
+PID driveRightDrivePID;
+
 int driveMult;
 bool angleNotSet = true;
 
@@ -97,7 +101,7 @@ void normalDrive() {
 		motor[rightFront] = -pidDrive;
 		motor[rightBack] = -pidDrive;
 
-	}else{
+		}else{
 
 		requestedAngle = NULL;
 
@@ -122,14 +126,55 @@ void normalDrive() {
 	}
 }
 
+float angVelocityPWM = 0; // How much do we want to change the motor PWM values to reach an angular velocity
+float leftVelocityPWM = 0;
+float rightVelocityPWM = 0;
+float leftDriveVelocity = 0;
+float rightDriveVelocity = 0;
+float gyroAngularVelocity = 0;
+int delayAmount = 25; // Delay 10ms
+
+float MAX_ANG_VEL = 720;
+float MAX_VEL = 300;
+void gyroDrive2() {
+
+	leftDriveVelocity = SensorValue[leftDrive] / delayAmount; // Divide by "delayAmount" so that if you change the update loop frequency, your velocities don't change
+	rightDriveVelocity = SensorValue[rightDrive] / delayAmount;
+	gyroAngularVelocity = SensorValue[gyro] / delayAmount;
+	SensorValue[leftDrive] = SensorValue[rightDrive] = SensorValue[gyro] = 0;
+
+	float targetAngularVelocity = vexRT[Ch3] * MAX_ANG_VEL;
+	float targetDriveVelocity = vexRT[Ch1] * MAX_VEL;
+
+	// During a velocity PID, you need to add the velocity error to the term modifying the speed/PWM
+	angVelocityPWM += PIDRun(gyroDrivePID, targetAngularVelocity - gyroAngularVelocity);
+	leftVelocityPWM += PIDRun(driveLeftDrivePID, targetDriveVelocity - leftDriveVelocity);
+	rightVelocityPWM += PIDRun(driveRightDrivePID, targetDriveVelocity - rightDriveVelocity);
+
+	//set power to motors
+	motor[leftFront]  = leftVelocityPWM + angVelocityPWM; // (y + x)/2
+	motor[rightFront] = rightVelocityPWM - angVelocityPWM;
+	motor[leftBack]  = leftVelocityPWM + angVelocityPWM;  // (y + x)/2
+	motor[rightBack] = rightVelocityPWM - angVelocityPWM;
+
+
+	// I don't know how fast the gyro updates on the cortex firmware, but try to match whatever frequency that is
+	delay(delayAmount);
+
+}
+
 //don't even bother with this, it doesnt work because it can't update fast enough,
 //left here in case a solution is found
 void gyroDrive() {
 	driveHalo(vexRT[Ch3],vexRT[Ch1]);
 }
 
+
 task driveTask (){
 	PIDInit(straightStrafe, .4, .25);
+	PIDInit(gyroDrivePID, .4, .25);
+	PIDInit(driveRightDrivePID, .4, .25);
+	PIDInit(driveLeftDrivePID, .4, .25);
 	while(true){
 		//Set Encoders to 0 on bumperswitch press
 		if(SensorValue(bumperSwitch)==1){ //if the elevator is all the way down, set encoder to 0
