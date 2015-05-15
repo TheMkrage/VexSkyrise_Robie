@@ -69,6 +69,7 @@ task usercontrol(){
 	//Clear LCD and Reset Sensors, then begin teleop
 	clearLCDLine(0);
 	resetEn();
+	resetGyro();
 	nMotorEncoder[rightEl] = 0;
 
 	//Start the tasks that control each aspect of the robot
@@ -96,14 +97,11 @@ task usercontrol(){
 		if(SensorValue(gyroBumper) == 1) { //if the gyro reset button is pressed, reset the gyro
 			 PlaySoundFile("1.wav");
 			resetGyro();
-			PlaySoundFile("gyroReset.wav");
+			//PlaySoundFile("gyroReset.wav");
 			//flash LED to show that it is done
 			SensorValue[led1] = true;
 			wait1Msec(750);
 			SensorValue[led1] = false;
 		}
-
-
-
 	}
 }

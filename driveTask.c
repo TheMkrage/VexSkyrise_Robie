@@ -50,6 +50,13 @@ float skim(float v) {
 	return 0;
 }
 
+float cut(int x, int limit) {
+	if(abs(x) < abs(limit)) {
+		return 0;
+	}
+	return x;
+}
+
 //drives with gyro asssist
 void driveHalo(float throttle, float turn) {
 	float gyroKP = .1;
@@ -132,32 +139,64 @@ float rightVelocityPWM = 0;
 float leftDriveVelocity = 0;
 float rightDriveVelocity = 0;
 float gyroAngularVelocity = 0;
-int delayAmount = 25; // Delay 10ms
+float delayAmount = 50; // Delay 10ms
 
-float MAX_ANG_VEL = 720;
-float MAX_VEL = 300;
+float MAX_ANG_VEL = 50;
+float MAX_VEL = 10;
 void gyroDrive2() {
 
-	leftDriveVelocity = SensorValue[leftDrive] / delayAmount; // Divide by "delayAmount" so that if you change the update loop frequency, your velocities don't change
-	rightDriveVelocity = SensorValue[rightDrive] / delayAmount;
-	gyroAngularVelocity = SensorValue[gyro] / delayAmount;
-	SensorValue[leftDrive] = SensorValue[rightDrive] = SensorValue[gyro] = 0;
+	if(vexRT[Btn6U] == 1) {
+		if(angleNotSet == true) {
+			requestedAngle = SensorValue[gyro];
+			//startPID(SensorValue[gyro], in1);
+			angleNotSet = false;
+		}
 
-	float targetAngularVelocity = vexRT[Ch3] * MAX_ANG_VEL;
-	float targetDriveVelocity = vexRT[Ch1] * MAX_VEL;
+		int pidDrive = PIDRun(straightStrafe, SensorValue[gyro] - requestedAngle);
+		motor[leftFront] = pidDrive;
+		motor[leftBack] = pidDrive;
+		motor[rightFront] = -pidDrive;
+		motor[rightBack] = -pidDrive;
+		} else {
+		leftDriveVelocity = (float)((float)-SensorValue[leftDrive] / delayAmount); // Divide by "delayAmount" so that if you change the update loop frequency, your velocities don't change
+		rightDriveVelocity = (float)((float)SensorValue[rightDrive] / delayAmount);
+		gyroAngularVelocity = (float)((float)-SensorValue[gyro] / delayAmount);
+		SensorValue[leftDrive] = SensorValue[rightDrive] = SensorValue[gyro] = 0;
+		writeDebugStreamLine("Left: %4.4f Right: %4.4f Ang: %4.4f", leftDriveVelocity, rightDriveVelocity, gyroAngularVelocity);
 
-	// During a velocity PID, you need to add the velocity error to the term modifying the speed/PWM
-	angVelocityPWM += PIDRun(gyroDrivePID, targetAngularVelocity - gyroAngularVelocity);
-	leftVelocityPWM += PIDRun(driveLeftDrivePID, targetDriveVelocity - leftDriveVelocity);
-	rightVelocityPWM += PIDRun(driveRightDrivePID, targetDriveVelocity - rightDriveVelocity);
+		writeDebugStreamLine("j: %4.4f max: %4.4f", vexRT[Ch1]/127, MAX_ANG_VEL);
+		float targetAngularVelocity = (float)((float) cut(vexRT[Ch1], 20) /127) * MAX_ANG_VEL;
+		float targetDriveVelocity = (float)((float) cut(vexRT[Ch3], 20) /127) * MAX_VEL;
+		writeDebugStreamLine("forJoy: %4.4f, after: %4.4f", vexRT[Ch3], vexRT[Ch3]/127);
+		writeDebugStreamLine("target ang: %4.4f target drive: %4.4f", targetAngularVelocity, targetDriveVelocity);
 
-	//set power to motors
-	motor[leftFront]  = leftVelocityPWM + angVelocityPWM; // (y + x)/2
-	motor[rightFront] = rightVelocityPWM - angVelocityPWM;
-	motor[leftBack]  = leftVelocityPWM + angVelocityPWM;  // (y + x)/2
-	motor[rightBack] = rightVelocityPWM - angVelocityPWM;
+		// During a velocity PID, you need to add the velocity error to the term modifying the speed/PWM
+		angVelocityPWM = PIDRun(gyroDrivePID, targetAngularVelocity - gyroAngularVelocity);
+		leftVelocityPWM = PIDRun(driveLeftDrivePID, targetDriveVelocity - leftDriveVelocity);
+		rightVelocityPWM = PIDRun(driveRightDrivePID, targetDriveVelocity - rightDriveVelocity);
 
+		float angVel = angVelocityPWM + skim(angVelocityPWM);
+		float leftVel = leftVelocityPWM + skim(leftVelocityPWM);
+		float rightVel = rightVelocityPWM + skim(rightVelocityPWM);
 
+		writeDebugStreamLine("leftVel PID: %4.4f",PIDRun(driveLeftDrivePID, targetDriveVelocity - leftDriveVelocity));
+		writeDebugStreamLine("VELTerm %4.4f", leftVelocityPWM);
+		writeDebugStreamLine("AngVelTerm %4.4f", angVelocityPWM);
+
+		//set power to motors
+		motor[leftFront]  = 127*(leftVel + angVel); // (y + x)/2
+		motor[rightFront] = 127*(rightVel - angVel);
+		motor[leftBack]  = 127*(leftVel + angVel);  // (y + x)/2
+		motor[rightBack] = 127*(rightVel - angVel);
+		writeDebugStreamLine("left: %4.4f right: %4.4f", 127*(leftVelocityPWM + angVelocityPWM), 127*(rightVelocityPWM - angVelocityPWM));
+		writeDebugStreamLine(" ");
+	}
+
+	if(vexRT[Ch4] > 40 || vexRT[Ch4] < -40) {	//Threshold for strafe joystick
+		motor[strafe] = vexRT[Ch4];
+		}else {
+		motor[strafe] = 0;
+	}
 	// I don't know how fast the gyro updates on the cortex firmware, but try to match whatever frequency that is
 	delay(delayAmount);
 
@@ -170,11 +209,13 @@ void gyroDrive() {
 }
 
 
+
+
 task driveTask (){
-	PIDInit(straightStrafe, .4, .25);
-	PIDInit(gyroDrivePID, .4, .25);
-	PIDInit(driveRightDrivePID, .4, .25);
-	PIDInit(driveLeftDrivePID, .4, .25);
+	PIDInit(straightStrafe, .01, .25);
+	PIDInit(gyroDrivePID, .02, 00);
+	PIDInit(driveRightDrivePID, .11, .75);
+	PIDInit(driveLeftDrivePID, .11, .75);
 	while(true){
 		//Set Encoders to 0 on bumperswitch press
 		if(SensorValue(bumperSwitch)==1){ //if the elevator is all the way down, set encoder to 0
@@ -185,7 +226,7 @@ task driveTask (){
 		driveMult = 1;
 
 		//Switch between the two to switch drives
-		normalDrive();
-		//gyroDrive();
+		//normalDrive();
+		gyroDrive2();
 	}
 }

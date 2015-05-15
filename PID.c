@@ -8,11 +8,12 @@ float PIDRun(struct PID controller, float error) {
 
 	// calculate the derivative
 	float pidDerivative = error - controller.previousError;
+	controller.previousError = error;
 	// calculate drive
+	writeDebugStreamLine("KP: %4.4f KD: %4.4f", (controller.kP * error),(controller.kD * pidDerivative));
 	return ((controller.kP * error)  + (controller.kD * pidDerivative));
 
-	controller.previousError = error;
-	wait1Msec(25);
+
 }
 
 int requestedGyroAngle;
