@@ -10,7 +10,7 @@ float PIDRun(struct PID controller, float error) {
 	float pidDerivative = error - controller.previousError;
 	controller.previousError = error;
 	// calculate drive
-	writeDebugStreamLine("KP: %4.4f KD: %4.4f", (controller.kP * error),(controller.kD * pidDerivative));
+//	writeDebugStreamLine("KP: %4.4f KD: %4.4f", (controller.kP * error),(controller.kD * pidDerivative));
 	return ((controller.kP * error)  + (controller.kD * pidDerivative));
 
 

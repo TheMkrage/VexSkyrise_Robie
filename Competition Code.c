@@ -82,7 +82,7 @@ task usercontrol(){
 
 	//The Debug Loop, not used for moving the robot, but for misc things that dont go in any other tasks
 	while(true) {
-		bool testingAuto = true;
+		bool testingAuto = false;
 		if(vexRT[Btn7D] == 1 && testingAuto) { //When Testing Auto, make the boolean true
 			//Stop All and Begin Auto
 			stopTask( driveTask);
@@ -91,12 +91,18 @@ task usercontrol(){
 			startTask(autonomous);
 		}
 
-		if(vexRT[Btn7R] == 1) {
+		if(vexRT[Btn7R] == 1 && !bSoundActive) {
 			playSoundFile("4.wav");
+		}
+
+		if(vexRT[Btn8R] == 1 && !bSoundActive) {
+			playSoundFile("5.wav");
 		}
 		if(SensorValue(gyroBumper) == 1) { //if the gyro reset button is pressed, reset the gyro
 			 PlaySoundFile("1.wav");
+			 stopTask(driveTask);
 			resetGyro();
+			startTask(driveTask);
 			//PlaySoundFile("gyroReset.wav");
 			//flash LED to show that it is done
 			SensorValue[led1] = true;

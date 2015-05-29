@@ -12,6 +12,13 @@ PID gyroDrivePID;
 PID driveLeftDrivePID;
 PID driveRightDrivePID;
 
+float x = 0;
+float y = 0;
+
+float pastLeft = 0;
+float pastRight =0;
+float pastGyro = 0;
+
 int driveMult;
 bool angleNotSet = true;
 
@@ -144,7 +151,6 @@ float delayAmount = 50; // Delay 10ms
 float MAX_ANG_VEL = 50;
 float MAX_VEL = 10;
 void gyroDrive2() {
-
 	if(vexRT[Btn6U] == 1) {
 		if(angleNotSet == true) {
 			requestedAngle = SensorValue[gyro];
@@ -157,18 +163,35 @@ void gyroDrive2() {
 		motor[leftBack] = pidDrive;
 		motor[rightFront] = -pidDrive;
 		motor[rightBack] = -pidDrive;
-		} else {
-		leftDriveVelocity = (float)((float)-SensorValue[leftDrive] / delayAmount); // Divide by "delayAmount" so that if you change the update loop frequency, your velocities don't change
-		rightDriveVelocity = (float)((float)SensorValue[rightDrive] / delayAmount);
-		gyroAngularVelocity = (float)((float)-SensorValue[gyro] / delayAmount);
-		SensorValue[leftDrive] = SensorValue[rightDrive] = SensorValue[gyro] = 0;
-		writeDebugStreamLine("Left: %4.4f Right: %4.4f Ang: %4.4f", leftDriveVelocity, rightDriveVelocity, gyroAngularVelocity);
+	} else {
 
-		writeDebugStreamLine("j: %4.4f max: %4.4f", vexRT[Ch1]/127, MAX_ANG_VEL);
+		writeDebugStreamLine("pastRight: %4.4f pastLeft: %4.4f pastGyro: %4.4f" , pastRight, pastLeft, pastGyro);
+
+		leftDriveVelocity = (float)(((float)-SensorValue[leftDrive] - pastLeft) / delayAmount); // Divide by "delayAmount" so that if you change the update loop frequency, your velocities don't change
+		rightDriveVelocity = (float)(((float)SensorValue[rightDrive] - pastRight) / delayAmount);
+		gyroAngularVelocity = (float)(((float)-SensorValue[gyro] - pastGyro) / delayAmount);
+
+		writeDebugStreamLine("LeftError: %4.4f rightError: %4.4f gyroError: %4.4f", ((float)SensorValue[leftDrive] - pastLeft), ((float)-SensorValue[rightDrive] - pastRight),  ((float)-SensorValue[gyro] - pastGyro));
+		x += sin((SensorValue[gyro]/10) * (pi/180)) * ((((float)-SensorValue[leftDrive] - pastLeft) + ((float)SensorValue[rightDrive] - pastRight))/2);
+		y += cos((SensorValue[gyro]/10) * (pi/180)) * ((((float)-SensorValue[leftDrive] - pastLeft) + ((float)SensorValue[rightDrive] - pastRight))/2);
+		writeDebugStreamLine("anglerawcos:%4.4f cos: %4.4f sin: %4.4f h: %4.4f", cos((SensorValue[gyro]/10) * (pi/180)), cos(SensorValue[gyro]/10), sin(SensorValue[gyro]/10),((((float)-SensorValue[leftDrive] - pastLeft) + ((float)SensorValue[rightDrive] - pastRight))/2 ));
+		writeDebugStreamLine("x: %i y: %i", x, y);
+
+		pastRight = (float)SensorValue[rightDrive];
+		pastLeft = (float)-SensorValue[leftDrive];
+		pastGyro = (float)-SensorValue[gyro];
+
+
+
+
+		// SensorValue[leftDrive] = SensorValue[rightDrive] = SensorValue[gyro] = 0;
+		//writeDebugStreamLine("Left: %4.4f Right: %4.4f Ang: %4.4f", leftDriveVelocity, rightDriveVelocity, gyroAngularVelocity);
+
+		//writeDebugStreamLine("j: %4.4f max: %4.4f", vexRT[Ch1]/127, MAX_ANG_VEL);
 		float targetAngularVelocity = (float)((float) cut(vexRT[Ch1], 20) /127) * MAX_ANG_VEL;
 		float targetDriveVelocity = (float)((float) cut(vexRT[Ch3], 20) /127) * MAX_VEL;
-		writeDebugStreamLine("forJoy: %4.4f, after: %4.4f", vexRT[Ch3], vexRT[Ch3]/127);
-		writeDebugStreamLine("target ang: %4.4f target drive: %4.4f", targetAngularVelocity, targetDriveVelocity);
+		///writeDebugStreamLine("forJoy: %4.4f, after: %4.4f", vexRT[Ch3], vexRT[Ch3]/127);
+		//writeDebugStreamLine("target ang: %4.4f target drive: %4.4f", targetAngularVelocity, targetDriveVelocity);
 
 		// During a velocity PID, you need to add the velocity error to the term modifying the speed/PWM
 		angVelocityPWM = PIDRun(gyroDrivePID, targetAngularVelocity - gyroAngularVelocity);
@@ -179,16 +202,16 @@ void gyroDrive2() {
 		float leftVel = leftVelocityPWM + skim(leftVelocityPWM);
 		float rightVel = rightVelocityPWM + skim(rightVelocityPWM);
 
-		writeDebugStreamLine("leftVel PID: %4.4f",PIDRun(driveLeftDrivePID, targetDriveVelocity - leftDriveVelocity));
-		writeDebugStreamLine("VELTerm %4.4f", leftVelocityPWM);
-		writeDebugStreamLine("AngVelTerm %4.4f", angVelocityPWM);
+		//writeDebugStreamLine("leftVel PID: %4.4f",PIDRun(driveLeftDrivePID, targetDriveVelocity - leftDriveVelocity));
+		//writeDebugStreamLine("VELTerm %4.4f", leftVelocityPWM);
+		//writeDebugStreamLine("AngVelTerm %4.4f", angVelocityPWM);
 
 		//set power to motors
 		motor[leftFront]  = 127*(leftVel + angVel); // (y + x)/2
 		motor[rightFront] = 127*(rightVel - angVel);
 		motor[leftBack]  = 127*(leftVel + angVel);  // (y + x)/2
 		motor[rightBack] = 127*(rightVel - angVel);
-		writeDebugStreamLine("left: %4.4f right: %4.4f", 127*(leftVelocityPWM + angVelocityPWM), 127*(rightVelocityPWM - angVelocityPWM));
+		//writeDebugStreamLine("left: %4.4f right: %4.4f", 127*(leftVelocityPWM + angVelocityPWM), 127*(rightVelocityPWM - angVelocityPWM));
 		writeDebugStreamLine(" ");
 	}
 
@@ -214,8 +237,8 @@ void gyroDrive() {
 task driveTask (){
 	PIDInit(straightStrafe, .01, .25);
 	PIDInit(gyroDrivePID, .02, 00);
-	PIDInit(driveRightDrivePID, .11, .75);
-	PIDInit(driveLeftDrivePID, .11, .75);
+	PIDInit(driveRightDrivePID, .11, 0);
+	PIDInit(driveLeftDrivePID, .11, 0);
 	while(true){
 		//Set Encoders to 0 on bumperswitch press
 		if(SensorValue(bumperSwitch)==1){ //if the elevator is all the way down, set encoder to 0
@@ -226,7 +249,9 @@ task driveTask (){
 		driveMult = 1;
 
 		//Switch between the two to switch drives
-		//normalDrive();
-		gyroDrive2();
+
+
+			gyroDrive2();
+
 	}
 }

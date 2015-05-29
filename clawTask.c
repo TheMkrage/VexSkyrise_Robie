@@ -19,7 +19,7 @@ task clawTask () {
 
 			}else if(vexRT[Btn6DXmtr2] == 1) { //open
 			if(!bSoundActive) {
-				playSoundFile("3.wav");
+				//playSoundFile("3.wav");
 			}
 			motor[rightClaw] = -127;
 
